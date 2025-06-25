@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>TP08 - Opérations</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+    }
+    .erreur {
+      color: white;
+      background-color: red;
+      padding: 8px;
+      margin-top: 10px;
+      display: none;
+    }
+    #resultat {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input, select {
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Calculatrice</h1>
+
+  <input type="text" id="nb1" placeholder="Entrez un nombre">
+  <select id="operateur">
+    <option value="+">Addition (+)</option>
+    <option value="-">Soustraction (-)</option>
+    <option value="*">Multiplication (*)</option>
+    <option value="/">Division (/)</option>
+  </select>
+  <input type="text" id="nb2" placeholder="Entrez un nombre">
+
+  <button id="calculer">Calculer</button>
+
+  <div id="messageErreur" class="erreur"></div>
+  <div id="resultat"></div>
+
+  <script>
+    document.querySelector("#calculer").addEventListener("click", () => {
+      const val1 = document.querySelector("#nb1").value;
+      const val2 = document.querySelector("#nb2").value;
+      const operateur = document.querySelector("#operateur").value;
+      const erreur = document.querySelector("#messageErreur");
+      const resultat = document.querySelector("#resultat");
+
+      const n1 = parseFloat(val1);
+      const n2 = parseFloat(val2);
+
+      // Réinitialisation
+      erreur.style.display = "none";
+      erreur.textContent = "";
+      resultat.textContent = "";
+
+      if (isNaN(n1) || isNaN(n2)) {
+        erreur.textContent = "Vous devez saisir un nombre";
+        erreur.style.display = "block";
+        return;
+      }
+
+      let res;
+      let message;
+
+      switch (operateur) {
+        case "+":
+          res = n1 + n2;
+          message = "Le résultat de l’addition est : ";
+          break;
+        case "-":
+          res = n1 - n2;
+          message = "Le résultat de la soustraction est : ";
+          break;
+        case "*":
+          res = n1 * n2;
+          message = "Le résultat de la multiplication est : ";
+          break;
+        case "/":
+          if (n2 === 0) {
+            erreur.textContent = "Division par zéro impossible";
+            erreur.style.display = "block";
+            return;
+          }
+          res = n1 / n2;
+          message = "Le résultat de la division est : ";
+          break;
+      }
+
+      resultat.textContent = message + res;
+    });
+  </script>
+
+</body>
+</html>

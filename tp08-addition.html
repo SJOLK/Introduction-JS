@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>TP08 - Addition</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+    }
+    .erreur {
+      color: white;
+      background-color: red;
+      padding: 8px;
+      margin-top: 10px;
+      display: none;
+    }
+    #resultat {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input {
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Additionneur</h1>
+
+  <input type="text" id="nb1" placeholder="Entrez un nombre">
+  <input type="text" id="nb2" placeholder="Entrez un nombre">
+  <button id="additionner">Additionner</button>
+
+  <div id="messageErreur" class="erreur"></div>
+  <div id="resultat"></div>
+
+  <script>
+    const btn = document.querySelector("#additionner");
+
+    btn.addEventListener("click", () => {
+      const val1 = document.querySelector("#nb1").value;
+      const val2 = document.querySelector("#nb2").value;
+      const messageErreur = document.querySelector("#messageErreur");
+      const resultat = document.querySelector("#resultat");
+
+      const num1 = parseFloat(val1);
+      const num2 = parseFloat(val2);
+
+      // Réinitialisation des messages
+      messageErreur.style.display = "none";
+      resultat.textContent = "";
+
+      if (isNaN(num1) || isNaN(num2)) {
+        messageErreur.textContent = "Vous devez saisir un nombre";
+        messageErreur.style.display = "block";
+      } else {
+        const somme = num1 + num2;
+        resultat.textContent = "Le résultat de l’addition est : " + somme;
+      }
+    });
+  </script>
+
+</body>
+</html>

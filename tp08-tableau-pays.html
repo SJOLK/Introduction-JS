@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pays pollueurs</title>
+  <script>
+    let data = {
+      polluant: "CO2",
+      unite: "milliards de tonnes",
+      annee: 2017,
+      pays: [
+        { nom: "Chine", valeur: 9.26, pourcentage: 28.2, code: "cn" },
+        { nom: "Etats-Unis", valeur: 4.76, pourcentage: 14.5, code: "us" },
+        { nom: "Inde", valeur: 2.16, pourcentage: 6.6, code: "in" },
+        { nom: "Russie", valeur: 1.54, pourcentage: 4.7, code: "ru" },
+        { nom: "Japon", valeur: 1.13, pourcentage: 3.4, code: "jp" },
+        { nom: "Allemagne", valeur: 0.72, pourcentage: 2.2, code: "de" },
+        { nom: "Corée du Sud", valeur: 0.6, pourcentage: 1.8, code: "kr" },
+        { nom: "Iran", valeur: 0.57, pourcentage: 1.7, code: "ir" },
+        { nom: "Canada", valeur: 0.55, pourcentage: 1.7, code: "ca" }
+      ]
+    };
+
+    function remplirTableau() {
+      document.getElementById("titre").textContent = `Pays les plus polluants pour le ${data.polluant} (${data.unite})`;
+      document.getElementById("annee").textContent = `Données de ${data.annee}`;
+
+      const tbody = document.getElementById("corps");
+      tbody.innerHTML = ""; // vider le tbody s’il y avait du contenu
+
+      for (let pays of data.pays) {
+        let tr = document.createElement("tr");
+
+        let tdNom = document.createElement("td");
+        tdNom.innerHTML = `<img src="https://flagcdn.com/24x18/${pays.code}.png" alt="${pays.nom}"> ${pays.nom}`;
+        tr.appendChild(tdNom);
+
+        let tdValeur = document.createElement("td");
+        tdValeur.textContent = pays.valeur;
+        tr.appendChild(tdValeur);
+
+        let tdPourcentage = document.createElement("td");
+        tdPourcentage.textContent = pays.pourcentage;
+        tr.appendChild(tdPourcentage);
+
+        tbody.appendChild(tr);
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td {
+      border-bottom: 1px solid #ccc;
+      padding: 0.5rem;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    td img {
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+  </style>
+</head>
+<body onload="remplirTableau()">
+
+  <h1 id="titre"></h1>
+  <h2 id="annee"></h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Valeur</th>
+        <th>%</th>
+      </tr>
+    </thead>
+    <tbody id="corps">
+      <!-- Lignes générées dynamiquement -->
+    </tbody>
+  </table>
+
+</body>
+</html>
