@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Liste des pays</title>
+  <script src="tp09-paysTri.js" defer></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    th {
+      cursor: pointer;
+      user-select: none;
+    }
+  </style>
+</head>
+<body onload="chargerPays()">
+  <h1>Liste des pays</h1>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Capitale</th>
+        <th onclick="trierParPopulation()">Population
+          <i id="iconePopulation" class="fa-solid fa-sort"></i>
+        </th>
+      </tr>
+    </thead>
+    <tbody id="corps"></tbody>
+  </table>
+</body>
+</html>
