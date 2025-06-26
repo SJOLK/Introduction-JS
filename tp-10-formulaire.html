@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gestion des utilisateurs</title>
+
+  <!-- composant modale -->
+  <script src="modale-view.js"></script>
+  <!-- logique métier -->
+  <script src="tp-10-utilisateurs.js" defer></script>
+
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2rem; }
+    h1  { margin-bottom: 1rem; }
+    button  { padding: .5rem 1rem; cursor: pointer; }
+    table   { border-collapse: collapse; width: 100%; margin-top: 1rem; }
+    th,td   { border: 1px solid #ccc; padding: .4rem .6rem; text-align: left; }
+    th      { background: #f4f4f4; }
+    tr:hover{ background: #fafafa; }
+    td i.fa-trash-can { color:#dc3545; cursor:pointer; }
+    .msg    { margin-top: 1rem; padding:.6rem 1rem; border-radius:4px; display:none; }
+    .msg.err{ background:#dc3545;color:#fff; }
+    .msg.ok { background:#198754;color:#fff; }
+    form label{display:block;margin:.4rem 0 .2rem;}
+    form input,form select{width:100%;padding:.4rem;}
+    form .row{display:flex;gap:1rem;}
+    form .row>div{flex:1;}
+  </style>
+</head>
+<body onload="initApp()">
+
+  <h1>Gestion des utilisateurs</h1>
+  <button onclick="openModale('modaleCreate')">
+    <i class="fa-solid fa-plus"></i> Ajouter
+  </button>
+  <div id="flash" class="msg"></div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Id</th><th>Nom</th><th>Prénom</th><th>Date de naissance</th>
+        <th>Lieu&nbsp;naissance</th><th>Adresse</th><th></th>
+      </tr>
+    </thead>
+    <tbody id="tbodyUsers"></tbody>
+  </table>
+
+  <!-- ----------- Modale CREATION ----------- -->
+  <modale-view id="modaleCreate" modale-width="40%">
+    <div slot="title" header-color="#0d6efd">Créer un utilisateur</div>
+
+    <div slot="body">
+      <form id="formCreate">
+        <label>Nom</label>          <input name="nom" required>
+        <label>Prénom</label>       <input name="prenom" required>
+
+        <label>Genre</label>
+        <select name="genre">
+          <option value="H">Homme</option>
+          <option value="F">Femme</option>
+          <option value="X">Autre</option>
+        </select>
+
+        <label>Date de naissance</label>
+        <input type="date" name="dateNaissance" required>
+
+        <label>Lieu de naissance</label>
+        <input name="lieuNaissance" required>
+
+        <label>Département de naissance</label>
+        <input name="departementNaissance">
+
+        <div class="row">
+          <div>
+            <label>N° rue</label>   <input name="numeroRue">
+          </div>
+          <div>
+            <label>Libellé rue</label><input name="libelleRue">
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label>Code postal</label><input name="codePostal">
+          </div>
+          <div>
+            <label>Ville</label><input name="ville">
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div slot="footer">
+      <button onclick="closeModale('modaleCreate')">Annuler</button>
+      <button onclick="submitCreate()">Valider</button>
+    </div>
+  </modale-view>
+
+  <!-- ----------- Modale CONFIRM SUPPR ----------- -->
+  <modale-view id="modaleDelete" modale-width="25%">
+    <div slot="title" header-color="#dc3545">Confirmation</div>
+    <div slot="body" id="deleteBody">Êtes-vous sûr&nbsp;?</div>
+    <div slot="footer">
+      <button onclick="closeModale('modaleDelete')">Annuler</button>
+      <button id="btnConfDel">Supprimer</button>
+    </div>
+  </modale-view>
+</body>
+</html>

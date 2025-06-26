@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Filtrage des pays pollueurs</title>
+
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style> /* (identique à ta version) */ </style>
+
+  <!-- IMPORTANT : le script est chargé en *defer* -->
+  <script src="tp10-filtrage.js" defer></script>
+</head>
+<body>
+  <h1>Pays les plus polluants</h1>
+
+  <fieldset>
+    <legend><i class="fa-solid fa-filter"></i>
+            Filtrer par valeur de pollution (milliards&nbsp;de&nbsp;tonnes)</legend>
+
+    <label for="min">MIN :</label>
+    <input id="min" type="number" step="0.01" placeholder="0">
+
+    <label for="max">MAX :</label>
+    <input id="max" type="number" step="0.01" placeholder="Valeur illimitée">
+
+    <button id="valider" type="button">Valider</button>
+    <div id="msgErreur" class="erreur"></div>
+  </fieldset>
+
+  <table>
+    <thead>
+      <tr><th>Pays</th><th>Valeur</th><th>%</th></tr>
+    </thead>
+    <tbody id="corps"></tbody>
+  </table>
+</body>
+</html>
