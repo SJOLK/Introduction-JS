@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Composants Web – Démo</title>
+<style>
+  body {font-family: system-ui, Arial, sans-serif; margin: 3rem;}
+  h1  {text-align: center; color: #3f51b5;}
+  section {margin-bottom: 2rem;}
+  demo-box {display:block;margin:1rem 0;padding:1rem;border:1px dashed #ccc;}
+</style>
+</head>
+<body>
+
+<h1> TP 12</h1>
+<h1>Composants HTML</h1>
+
+<section>
+  <h2>Exercice Card</h2>
+  <demo-box>
+    <user-card name="Om RHANBOURI"
+               avatar="https://i.pravatar.cc/80?img=10"></user-card>
+  </demo-box>
+</section>
+
+<section>
+  <h2>Exercice BoutonCompteur</h2>
+  <demo-box>
+    <counter-button val ="13"></counter-button>
+  </demo-box>
+</section>
+
+<section>
+  <h2>Exercice TodoListe</h2>
+  <demo-box>
+    <todo-list></todo-list>
+  </demo-box>
+</section>
+
+<section>
+  <h2>Exercice InfoBox</h2>
+  <demo-box>
+    <info-box>
+      <span slot="title">Alerte</span>
+      <p>Une mise à jour système est disponible.</p>
+    </info-box>
+  </demo-box>
+</section>
+
+<script>
+/* ===========================================================
+   <user-card>
+   ===========================================================*/
+class UserCard extends HTMLElement {
+  constructor(){
+    super();
+    this.attachShadow({mode:'open'});
+  }
+  connectedCallback(){
+    const name   = this.getAttribute('name')   ?? 'John Doe';
+    const avatar = this.getAttribute('avatar') ?? 'https://i.pravatar.cc/80';
+    this.shadowRoot.innerHTML = `
+      <style>
+        .card{display:flex;align-items:center;gap:.8rem;
+              border:1px solid #ddd;padding:.8rem;border-radius:6px;
+              max-width:240px;font-size:.9rem;}
+        img{border-radius:50%;width:64px;height:64px;object-fit:cover;}
+        .name{font-weight:600;}
+      </style>
+      <div class="card">
+        <img src="${avatar}" alt="avatar">
+        <div class="name">${name}</div>
+      </div>`;
+  }
+}
+customElements.define('user-card', UserCard);
+
+/* ===========================================================
+   <counter-button>
+   ===========================================================*/
+
+class CounterButton extends HTMLElement {
+  static get observedAttributes() { return ["val"]; }
+
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
+    this.count = 0;               // valeur par défaut
+  }
+
+  connectedCallback() {
+    this.count = Number(this.getAttribute("val")) || 0;
+    this.render();
+  }
+
+  attributeChangedCallback(name, oldV, newV) {
+    if (name === "val" && oldV !== newV) {
+      this.count = Number(newV) || 0;
+      this.render();
+    }
+  }
+
+  increment() {
+    this.count++;
+    this.render();
+  }
+
+  render() {
+    this.shadowRoot.innerHTML = `
+      <style>
+        button{
+          padding:.6rem 1.2rem;
+          font-size:1rem;
+          border:1px solid #555;
+          border-radius:6px;
+          cursor:pointer;
+          background:#f0f0f0;
+          transition:background .15s;
+        }
+        button:hover{background:#e6e6e6;}
+      </style>
+      <button>Bouton: ${this.count}</button>
+    `;
+    this.shadowRoot.querySelector("button")
+        .onclick = () => this.increment();
+  }
+}
+customElements.define("counter-button", CounterButton);
+
+
+/* ===========================================================
+   <todo-list>
+   ===========================================================*/
+class TodoList extends HTMLElement{
+  constructor(){
+    super();
+    this.attachShadow({mode:'open'});
+    this.tasks = [];
+  }
+  connectedCallback(){ this.render(); }
+  addTask(txt){
+    if(!txt.trim()) return;
+    this.tasks.push(txt.trim());
+    this.render();
+  }
+  deleteTask(index){
+    this.tasks.splice(index,1);
+    this.render();
+  }
+  render(){
+    this.shadowRoot.innerHTML = `
+      <style>
+        .box{border:1px solid #bbb;padding:1rem;border-radius:6px;max-width:260px;}
+        ul{list-style:none;padding:0;margin:.8rem 0;}
+        li{display:flex;justify-content:space-between;align-items:center;
+           padding:.3rem 0;border-bottom:1px dashed #ccc;font-size:.9rem;}
+        button{border:none;background:none;color:#dc3545;cursor:pointer;font-size:1rem;}
+        input[type=text]{width:100%;padding:.4rem;}
+      </style>
+      <div class="box">
+        <div>
+          <input id="txt" type="text" placeholder="Nouvelle tâche…">
+          <button id="add">➕</button>
+        </div>
+        <ul>
+          ${this.tasks.map((t,i)=>`
+            <li>${t} <button data-i="${i}">🗑️</button></li>`).join('')}
+        </ul>
+      </div>`;
+    // listeners
+    this.shadowRoot.getElementById('add')
+        .onclick = () => this.addTask(this.shadowRoot.getElementById('txt').value);
+    this.shadowRoot.querySelectorAll('button[data-i]')
+        .forEach(b => b.onclick = () => this.deleteTask(Number(b.dataset.i)));
+  }
+}
+customElements.define('todo-list', TodoList);
+
+/* ===========================================================
+   <info-box>
+   - slot "title" pour le titre
+   - contenu libre pour le texte
+   ===========================================================*/
+class InfoBox extends HTMLElement {
+  constructor(){
+    super();
+    this.attachShadow({mode:'open'});
+  }
+  connectedCallback(){
+    const typeIcon = this.getAttribute('icon') ?? 'fa-circle-info';
+    this.shadowRoot.innerHTML = `
+      <style>
+        .wrap{border:1px solid #ddd;border-left:4px solid #0d6efd;
+              border-radius:6px;padding:1rem;max-width:400px;background:#f9f9ff;}
+        .title{font-weight:600;margin-left:.4rem;}
+        .head{display:flex;align-items:center;color:#0d6efd;margin-bottom:.4rem;}
+        ::slotted(*){margin:0;}
+      </style>
+      <div class="wrap">
+        <div class="head">
+          <i class="fa-solid ${typeIcon}"></i>
+          <slot name="title" class="title">Titre</slot>
+        </div>
+        <slot></slot>
+      </div>`;
+  }
+}
+customElements.define('info-box', InfoBox);
+</script>
+
+<!-- Font Awesome (icônes) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/js/all.min.js" defer></script>
+</body>
+</html>
