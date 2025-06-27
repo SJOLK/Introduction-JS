@@ -1,0 +1,28 @@
+{
+  "utilisateurs": [
+    {
+      "id": "1",
+      "nom": "Durand",
+      "prenom": "Alice",
+      "dateNaissance": "1990-05-12",
+      "lieuNaissance": "Paris",
+      "departementNaissance": "75",
+      "numeroRue": "12",
+      "libelleRue": "rue de la Paix",
+      "codePostal": "75002",
+      "ville": "Paris"
+    },
+    {
+      "id": "2",
+      "nom": "Martin",
+      "prenom": "Bob",
+      "dateNaissance": "1985-11-03",
+      "lieuNaissance": "Lyon",
+      "departementNaissance": "69",
+      "numeroRue": "8",
+      "libelleRue": "av. des Lumières",
+      "codePostal": "69003",
+      "ville": "Lyon"
+    }
+  ]
+}
